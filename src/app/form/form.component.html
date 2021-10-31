@@ -1,0 +1,24 @@
+
+<div mat-dialog-content class="mat-dialog-content">
+  <p>Введіть ваш фільм</p>
+  <mat-form-field appearance="fill">
+    <mat-label>Назва фільму</mat-label>
+    <input matInput [(ngModel)]="data.newElement.name">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Дата виходу</mat-label>
+    <input type="date" matInput [(ngModel)]="data.newElement.releaseData">
+  </mat-form-field>
+  <mat-form-field>
+    <ngx-mat-file-input [(ngModel)]="data.newElement.imageFile" [multiple]="true" accept=".png, .jpg, .jpeg">
+    </ngx-mat-file-input>
+  </mat-form-field> 
+  <mat-form-field appearance="fill">
+    <mat-label>Касові збори</mat-label>
+    <input type="number" matInput [(ngModel)]="data.newElement.boxOffice">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="data.newElement" cdkFocusInitial>Ok</button>
+</div>
