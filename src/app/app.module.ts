@@ -20,6 +20,9 @@ import { FormComponent } from './form/form.component';
 import { FormsModule } from '@angular/forms';
 import { NgxMatFileInputModule } from '@angular-material-components/file-input';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { HeaderComponent } from './header/header.component';
+import { MoviesService } from './movies.service';
+import { FavoriteMoviesComponent } from './favorite-movies/favorite-movies.component';
 
 
 
@@ -27,7 +30,9 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
   declarations: [	
     AppComponent,
     MoviesListComponent,
-    FormComponent
+    FormComponent,
+    HeaderComponent,
+    FavoriteMoviesComponent
    ],
   imports: [
     BrowserModule,
@@ -48,7 +53,7 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     FormsModule,
     NgxMatFileInputModule
   ],
-  providers: [],
+  providers: [MoviesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

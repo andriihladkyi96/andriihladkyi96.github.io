@@ -1,3 +1,4 @@
+import { MoviesService } from './../movies.service';
 import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -33,17 +34,7 @@ export class MoviesListComponent implements OnInit, OnDestroy {
 
   toggleControl = new FormControl(false);
 
-  moviesList: FilmData[] = [
-    { "id": 1, "name": "Титанік", imageSourse: "", releaseData: new Date(2019, 12, 10), boxOffice: this.formatBoxOffice(145680000), dateOfCreation: new Date(2020, 11, 5), isFavorite: false },
-    { "id": 0, "name": "Зелена миля", imageSourse: "", releaseData: new Date(2018, 12, 10), boxOffice: this.formatBoxOffice(895600000), dateOfCreation: new Date(2014, 1, 6), isFavorite: false },
-    { "id": 2, "name": "Гаррі Поттер", imageSourse: "", releaseData: new Date(2017, 12, 10), boxOffice: this.formatBoxOffice(2890000), dateOfCreation: new Date(2013, 1, 6), isFavorite: false },
-    { "id": 3, "name": "Movie", imageSourse: "", releaseData: new Date(2016, 12, 10), boxOffice: this.formatBoxOffice(789500000), dateOfCreation: new Date(2016, 7, 6), isFavorite: false },
-    { "id": 4, "name": "Movie", imageSourse: "", releaseData: new Date(2016, 11, 10), boxOffice: this.formatBoxOffice(5600000), dateOfCreation: new Date(2013, 8, 6), isFavorite: false },
-    { "id": 5, "name": "Movie", imageSourse: "", releaseData: new Date(2014, 12, 10), boxOffice: this.formatBoxOffice(2000), dateOfCreation: new Date(2014, 1, 9), isFavorite: false },
-    { "id": 6, "name": "Movie", imageSourse: "", releaseData: new Date(2013, 12, 10), boxOffice: this.formatBoxOffice(46000), dateOfCreation: new Date(2013, 1, 11), isFavorite: false },
-    { "id": 7, "name": "Movie", imageSourse: "", releaseData: new Date(2012, 12, 10), boxOffice: this.formatBoxOffice(100), dateOfCreation: new Date(2013, 2, 6), isFavorite: false },
-    { "id": 8, "name": "Movie", imageSourse: "", releaseData: new Date(2021, 12, 10), boxOffice: this.formatBoxOffice(200000), dateOfCreation: new Date(2013, 1, 26), isFavorite: false },
-  ];
+  moviesList: FilmData[] = [];
   // JSON.parse(localStorage.getItem("films")||" ");
 
   moviesListFavorits: FilmData[] = [];
@@ -56,9 +47,9 @@ export class MoviesListComponent implements OnInit, OnDestroy {
 
   @HostBinding('class') className = '';
 
-  constructor(private dialog: MatDialog, private overlay: OverlayContainer) { }
+  constructor(private dialog: MatDialog, private overlay: OverlayContainer, private movieService: MoviesService) { }
   ngOnDestroy(): void {
-    localStorage.setItem("films", JSON.stringify(this.moviesList));
+    // localStorage.setItem("films", JSON.stringify(this.moviesList));
   }
 
 
@@ -72,7 +63,7 @@ export class MoviesListComponent implements OnInit, OnDestroy {
         this.overlay.getContainerElement().classList.remove(darkClassName);
       }
     });
-
+    this.moviesList = this.movieService.getMovies();
   }
 
   toogleView() {
@@ -105,11 +96,9 @@ export class MoviesListComponent implements OnInit, OnDestroy {
 
   //favorite page movies logiс
   toogleIsFavorite(id: number) {
-    let film = this.moviesList.find(element => element.id === id)
-    if (film) {
-      film.isFavorite = !film.isFavorite;
-    };
+    this.movieService.toogleIsFavorite(id);
   }
+
   deleteFromFavorite(id: number) {
     let film = this.moviesList.find(element => element.id === id)
     if (film) {
@@ -130,7 +119,8 @@ export class MoviesListComponent implements OnInit, OnDestroy {
 
   //delete element from array
   deleteElement(id: number) {
-    this.moviesList = this.moviesList.filter(film => film.id !== id);
+    this.movieService.deleteMovie(id);
+    this.moviesList = this.movieService.getMovies();
     this.moviesListFavorits = this.moviesListFavorits.filter(film => film.id !== id);
   }
 
@@ -146,37 +136,38 @@ export class MoviesListComponent implements OnInit, OnDestroy {
       });
 
     dialogRef.afterClosed().subscribe(result => {
-      debugger
       if (result.imageFile) {
         this.getBase64(result.imageFile[0])
-          .then(data => this.moviesList.push(
+          .then(data => 
+            this.movieService.addMovie(
+                {
+                  id: this.moviesList.length,
+                  name: result.name,
+                  dateOfCreation: new Date(),
+                  releaseData: new Date(result.releaseData),
+                  imageSourse: data,
+                  isFavorite: false,
+                  boxOffice:  this.formatBoxOffice(result.boxOffice),
+                }
+            )
+          )
+      } else {
+        this.movieService.addMovie(
             {
               id: this.moviesList.length,
               name: result.name,
               dateOfCreation: new Date(),
               releaseData: new Date(result.releaseData),
-              imageSourse: data,
+              imageSourse: "",
               isFavorite: false,
-              boxOffice:  this.formatBoxOffice(result.boxOffice),
+              boxOffice: this.formatBoxOffice(result.boxOffice),
             }
           )
-          )
-      } else {
-        this.moviesList.push(
-          {
-            id: this.moviesList.length,
-            name: result.name,
-            dateOfCreation: new Date(),
-            releaseData: new Date(result.releaseData),
-            imageSourse: "",
-            isFavorite: false,
-            boxOffice: this.formatBoxOffice(result.boxOffice),
-          }
-        )
       }
     });
   }
 
+  // converts  the image file to the Base64 format 
   private getBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -185,6 +176,8 @@ export class MoviesListComponent implements OnInit, OnDestroy {
       reader.onerror = error => reject(error);
     });
   }
+
+
   private formatBoxOffice(receipts: number): string {
     let result = ""
     if (receipts > 1000000) {
@@ -196,6 +189,7 @@ export class MoviesListComponent implements OnInit, OnDestroy {
     }
     return result;
   }
+
   toogleMenu(){
     this.isMenu = !this.isMenu;
   }

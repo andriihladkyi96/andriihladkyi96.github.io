@@ -1,0 +1,21 @@
+<header class="header" [ngStyle]="{'color': 'primary'}">
+    <div class="container">
+      <mat-toolbar class="header__toolbar" color="primary">
+        <div [ngClass]="isMenu ? 'header__inner active' : 'header__inner'">
+          <mat-icon class="header__icon">movie_filter</mat-icon>
+          <a class="header__link">
+            <!-- (click)="toogleFavoriteView()" -->
+            <span *ngIf="favoriteView">Всі фільми</span>
+            <span *ngIf="!favoriteView">Улюблені фільми</span>
+          </a>
+          <div class="header__tooggle">
+            <mat-slide-toggle [formControl]="toggleControl" class="mr-8">
+            </mat-slide-toggle>
+            <mat-icon>bedtime</mat-icon>
+          </div>
+        </div>
+        <mat-icon class="header__menu-btn">menu</mat-icon>
+        <!-- (click)="toogleMenu()" -->
+      </mat-toolbar>
+    </div>
+  </header>
