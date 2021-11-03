@@ -3,7 +3,7 @@
     <mat-toolbar class="header__toolbar" color="primary">
       <div [ngClass]="isMenu ? 'header__inner active' : 'header__inner'">
         <mat-icon class="header__icon">movie_filter</mat-icon>
-        <a class="header__link" (click)="toogleFavoriteView()">
+        <a class="header__link">
           <span *ngIf="favoriteView">Всі фільми</span>
           <span *ngIf="!favoriteView">Улюблені фільми</span>
         </a>
@@ -47,7 +47,8 @@
       </div>
       <div class="navigation__expansion-panel">
         <mat-accordion>
-          <mat-expansion-panel [expanded]="panelOpenState" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+          <mat-expansion-panel [expanded]="panelOpenState" (opened)="panelOpenState = true"
+            (closed)="panelOpenState = false">
             <mat-expansion-panel-header>
               <mat-panel-title>
                 Сортувати за:
@@ -72,26 +73,11 @@
       </div>
     </div>
   </div>
-  <section class="movie">
+  <section class="movie_section">
     <div class="movie__container">
-      <div [ngClass]="{'table-view':tableView, 'list-view':!tableView}">
-        <mat-card *ngFor="let item of favoriteView ? moviesListFavorits : moviesList" class="movie__card">
-          <div class="movie__card-header">
-            <img [src]="item.imageSourse ? item.imageSourse : 'assets/images/movie-banner.jpg'" alt="film image"
-              class="movie__card-img">
-          </div>
-          <div class="movie__card-content">
-            <p class="movie__card-title">{{item.name}} </p>
-            <p class="movie__card-text">Касові збори: {{item.boxOffice}}</p>
-            <p class="movie__card-date">Дата релізу: {{item.releaseData | date: 'dd.MM.yyyy'}}</p>
-            <p class="movie__card-date">Дата створення картки: {{item.dateOfCreation | date: 'dd.MM.yyyy'}} </p>
-          </div>
-          <img class="delete-btn" src="assets/images/clear_black.svg" alt="delete icon"
-            (click)="deleteElement(item.id)">
-          <img [class]="item.isFavorite ? 'favorite-btn-active favorite-btn' : 'favorite-btn'"
-            src="assets/images/star_rate_black.svg" alt="star icon"
-            (click)="favoriteView ? deleteFromFavorite(item.id) : toogleIsFavorite(item.id)">
-        </mat-card>
+      <div [class]="{'table-view':tableView, 'list-view':!tableView}">
+        <app-movie *ngFor="let movie of moviesList" [movie]="movie" [tableView]="tableView"
+          (deleteMovie)="deleteMovie($event)" (changeFavoriteStatus)="changeFavoriteStatus($event)"></app-movie>
       </div>
       <button mat-fab class="dialog-btn" color="primary" (click)="showDialog()">
         <mat-icon>add</mat-icon>

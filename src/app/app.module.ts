@@ -23,16 +23,18 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { HeaderComponent } from './header/header.component';
 import { MoviesService } from './movies.service';
 import { FavoriteMoviesComponent } from './favorite-movies/favorite-movies.component';
+import { MovieComponent } from './movie/movie.component';
 
 
 
 @NgModule({
-  declarations: [	
+  declarations: [		
     AppComponent,
     MoviesListComponent,
     FormComponent,
     HeaderComponent,
-    FavoriteMoviesComponent
+    FavoriteMoviesComponent,
+      MovieComponent
    ],
   imports: [
     BrowserModule,

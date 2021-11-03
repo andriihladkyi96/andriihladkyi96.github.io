@@ -1,0 +1,16 @@
+<mat-card [class]="{'movie__card' : true, 'movie__card-table' : tableView, 'movie__card-list' : !tableView}">
+  <div class="movie__card-header">
+    <img [src]="movie.imageSourse ? movie.imageSourse : '../assets/images/movie-banner.jpg'" alt="film image"
+      class="movie__card-img">
+  </div>
+  <div class="movie__card-content">
+    <p class="movie__card-title">{{movie.name}} </p>
+    <p class="movie__card-text">Касові збори: {{movie.boxOffice}}</p>
+    <p class="movie__card-date">Дата релізу: {{movie.releaseData | date: 'dd.MM.yyyy'}}</p>
+    <p class="movie__card-date">Дата створення картки: {{movie.dateOfCreation | date: 'dd.MM.yyyy'}} </p>
+  </div>
+  <img class="delete-btn" src="assets/images/clear_black.svg" alt="delete icon" (click)="deleteElement()">
+  <img [class]="movie.isFavorite ? 'favorite-btn-active favorite-btn' : 'favorite-btn'"
+    src="assets/images/star_rate_black.svg" alt="star icon"
+    (click)="toogleIsFavorite()">
+</mat-card>

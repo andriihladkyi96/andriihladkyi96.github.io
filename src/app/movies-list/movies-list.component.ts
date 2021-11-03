@@ -1,19 +1,12 @@
+import { Movie } from './../models/movie';
 import { MoviesService } from './../movies.service';
 import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { FormComponent } from '../form/form.component';
+import { LocalStorageService } from '../local-storage.service';
 
-export interface FilmData {
-  id: number,
-  name: string,
-  imageSourse: string,
-  boxOffice: string,
-  releaseData: Date,
-  dateOfCreation: Date,
-  isFavorite: boolean
-}
 
 export interface Data {
   newElement: {
@@ -30,14 +23,13 @@ export interface Data {
   styleUrls: ['./movies-list.component.scss'],
   providers: []
 })
-export class MoviesListComponent implements OnInit, OnDestroy {
+export class MoviesListComponent implements OnInit{
 
   toggleControl = new FormControl(false);
 
-  moviesList: FilmData[] = [];
-  // JSON.parse(localStorage.getItem("films")||" ");
+  moviesList: Movie[] = [];
 
-  moviesListFavorits: FilmData[] = [];
+  moviesListFavorits: Movie[] = [];
 
   tableView: boolean = true;
   favoriteView: boolean = false;
@@ -47,10 +39,7 @@ export class MoviesListComponent implements OnInit, OnDestroy {
 
   @HostBinding('class') className = '';
 
-  constructor(private dialog: MatDialog, private overlay: OverlayContainer, private movieService: MoviesService) { }
-  ngOnDestroy(): void {
-    // localStorage.setItem("films", JSON.stringify(this.moviesList));
-  }
+  constructor(private dialog: MatDialog, private overlay: OverlayContainer, private movieService: MoviesService,private localStorageService: LocalStorageService) { }
 
 
   ngOnInit() {
@@ -64,10 +53,12 @@ export class MoviesListComponent implements OnInit, OnDestroy {
       }
     });
     this.moviesList = this.movieService.getMovies();
+    this.tableView = this.localStorageService.getItem('tableView');
   }
 
   toogleView() {
     this.tableView = !this.tableView;
+    this.localStorageService.setItem('tableView', this.tableView);
   }
 
   //sort logic
@@ -95,35 +86,39 @@ export class MoviesListComponent implements OnInit, OnDestroy {
 
 
   //favorite page movies logiс
-  toogleIsFavorite(id: number) {
-    this.movieService.toogleIsFavorite(id);
+  // toogleIsFavorite(id: number) {
+  //   this.movieService.toogleIsFavorite(id);
+  // }
+
+  // deleteFromFavorite(id: number) {
+  //   let film = this.moviesList.find(element => element.id === id)
+  //   if (film) {
+  //     film.isFavorite = !film.isFavorite;
+  //   }
+  //   this.moviesListFavorits = this.sortByFavorite();
+  // }
+  // sortByFavorite() {
+  //   return this.moviesList.filter(
+  //     el => el.isFavorite === true
+  //   );
+  // }
+  // toogleFavoriteView() {
+  //   this.favoriteView = !this.favoriteView;
+  //   // this.moviesListFavorits = this.sortByFavorite();
+  // }
+
+  deleteMovie($event: number): void {
+    this.movieService.deleteMovie($event);
+    this.updateMovies();
   }
 
-  deleteFromFavorite(id: number) {
-    let film = this.moviesList.find(element => element.id === id)
-    if (film) {
-      film.isFavorite = !film.isFavorite;
-    }
-    this.moviesListFavorits = this.sortByFavorite();
-  }
-  sortByFavorite() {
-    return this.moviesList.filter(
-      el => el.isFavorite === true
-    );
-  }
-  toogleFavoriteView() {
-    this.favoriteView = !this.favoriteView;
-    this.moviesListFavorits = this.sortByFavorite();
+  changeFavoriteStatus($event: number): void{
+    this.movieService.toogleIsFavorite($event);
   }
 
-
-  //delete element from array
-  deleteElement(id: number) {
-    this.movieService.deleteMovie(id);
+  updateMovies(){
     this.moviesList = this.movieService.getMovies();
-    this.moviesListFavorits = this.moviesListFavorits.filter(film => film.id !== id);
   }
-
 
   // show a pop-up window for entering a new movie
   // converts the result to the desired types
@@ -140,30 +135,31 @@ export class MoviesListComponent implements OnInit, OnDestroy {
         this.getBase64(result.imageFile[0])
           .then(data => 
             this.movieService.addMovie(
-                {
-                  id: this.moviesList.length,
-                  name: result.name,
-                  dateOfCreation: new Date(),
-                  releaseData: new Date(result.releaseData),
-                  imageSourse: data,
-                  isFavorite: false,
-                  boxOffice:  this.formatBoxOffice(result.boxOffice),
-                }
+              new Movie(
+                  this.moviesList.length,
+                  result.name,
+                  data,
+                  this.formatBoxOffice(result.boxOffice),
+                  new Date(),
+                  new Date(result.releaseData),
+                  false,
+              )
             )
           )
       } else {
         this.movieService.addMovie(
-            {
-              id: this.moviesList.length,
-              name: result.name,
-              dateOfCreation: new Date(),
-              releaseData: new Date(result.releaseData),
-              imageSourse: "",
-              isFavorite: false,
-              boxOffice: this.formatBoxOffice(result.boxOffice),
-            }
+            new Movie(
+              this.moviesList.length,
+              result.name,
+              "",
+              this.formatBoxOffice(result.boxOffice),
+              new Date(result.releaseData),
+              new Date(),
+              false
+            )
           )
       }
+      this.updateMovies();
     });
   }
 
