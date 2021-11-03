@@ -35,6 +35,7 @@ export class MoviesService {
   }
 
   public getFavoriteMovies() {
+    this.getMovies();
     return this.moviesList.filter(
       movies => movies.isFavorite === true
     );

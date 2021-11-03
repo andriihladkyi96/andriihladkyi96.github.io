@@ -29,10 +29,7 @@ export class MoviesListComponent implements OnInit{
 
   moviesList: Movie[] = [];
 
-  moviesListFavorits: Movie[] = [];
-
   tableView: boolean = true;
-  favoriteView: boolean = false;
   isMenu:boolean = false;
   panelOpenState:boolean = false;
   sortValue:string = "алфавітом";
@@ -83,29 +80,6 @@ export class MoviesListComponent implements OnInit{
     this.sortValue="алфавітом";
     this.panelOpenState = false;
   }
-
-
-  //favorite page movies logiс
-  // toogleIsFavorite(id: number) {
-  //   this.movieService.toogleIsFavorite(id);
-  // }
-
-  // deleteFromFavorite(id: number) {
-  //   let film = this.moviesList.find(element => element.id === id)
-  //   if (film) {
-  //     film.isFavorite = !film.isFavorite;
-  //   }
-  //   this.moviesListFavorits = this.sortByFavorite();
-  // }
-  // sortByFavorite() {
-  //   return this.moviesList.filter(
-  //     el => el.isFavorite === true
-  //   );
-  // }
-  // toogleFavoriteView() {
-  //   this.favoriteView = !this.favoriteView;
-  //   // this.moviesListFavorits = this.sortByFavorite();
-  // }
 
   deleteMovie($event: number): void {
     this.movieService.deleteMovie($event);

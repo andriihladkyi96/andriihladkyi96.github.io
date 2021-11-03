@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Movie } from '../models/movie';
+import { MoviesService } from '../movies.service';
 
 @Component({
   selector: 'app-favorite-movies',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FavoriteMoviesComponent implements OnInit {
 
-  constructor() { }
+  moviesList: Movie[] = [];
+
+  constructor(private movieService: MoviesService) { }
 
   ngOnInit(): void {
+    this.updateMovies();
   }
 
+  changeFavoriteStatus($event: number): void{
+    this.movieService.toogleIsFavorite($event);
+    this.updateMovies();
+  }
+
+  updateMovies(){
+    this.moviesList = this.movieService.getFavoriteMovies();
+  }
 }

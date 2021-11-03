@@ -10,7 +10,6 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 export class HeaderComponent implements OnInit {
 
   toggleControl = new FormControl(false);
-  favoriteView: boolean = false;
   isMenu:boolean = false;
   
   @HostBinding('class') className = '';

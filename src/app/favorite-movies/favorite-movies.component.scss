@@ -1,0 +1,11 @@
+.movie__container {
+    max-width: 1220px;
+    padding: 0 10px;
+    margin: 0 auto;
+    @media (max-width: 1240px) {
+        max-width: 920px;
+    }
+    @media (max-width: 920px) {
+        max-width: 620px;
+    }
+}

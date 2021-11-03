@@ -1,1 +1,4 @@
-<p>favorite-movies works!</p>
+<div class="movie__container"> 
+      <app-movie *ngFor="let movie of moviesList" [movie]="movie" [tableView]="false"
+        (deleteMovie)="changeFavoriteStatus($event)" (changeFavoriteStatus)="changeFavoriteStatus($event)"></app-movie>
+  </div>
