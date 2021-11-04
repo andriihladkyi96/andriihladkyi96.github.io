@@ -1,6 +1,6 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { OverlayContainer } from '@angular/cdk/overlay';
+import { LocalStorageService } from './../local-storage.service';
+import { Component, EventEmitter, HostBinding, OnInit, Output } from '@angular/core';
+
 
 @Component({
   selector: 'app-header',
@@ -9,23 +9,27 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 })
 export class HeaderComponent implements OnInit {
 
-  toggleControl = new FormControl(false);
   isMenu:boolean = false;
-  
-  @HostBinding('class') className = '';
+  isDarkTheme:boolean=false;
 
-  constructor(private overlay: OverlayContainer) { }
+  @Output()
+  toogleDarkMode: EventEmitter<boolean> = new EventEmitter<boolean>();
+  
+  constructor(private localStorageService:LocalStorageService) { }
 
   ngOnInit(): void {
-    this.toggleControl.valueChanges.subscribe((darkMode) => {
-      const darkClassName = 'darkMode';
-      this.className = darkMode ? darkClassName : '';
-      if (darkMode) {
-        this.overlay.getContainerElement().classList.add(darkClassName);
-      } else {
-        this.overlay.getContainerElement().classList.remove(darkClassName);
-      }
-    });
+    this.isDarkTheme = this.localStorageService.getItem("isDarkTheme");
+    this.toogleDarkMode.emit(this.isDarkTheme);
+  }
+
+  toggleControl(){
+    this.isDarkTheme = !this.isDarkTheme;
+    this.localStorageService.setItem("isDarkTheme",this.isDarkTheme);
+    this.toogleDarkMode.emit(this.isDarkTheme);
+  }
+
+  toogleMenu(){
+    this.isMenu = !this.isMenu;
   }
 
 }

@@ -1,11 +1,23 @@
-.movie__container {
+.movie__container-favorite{
     max-width: 1220px;
-    padding: 0 10px;
+    padding: 30px;
     margin: 0 auto;
     @media (max-width: 1240px) {
         max-width: 920px;
     }
     @media (max-width: 920px) {
         max-width: 620px;
+    }
+}
+
+.no-movies-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    &-text {
+        font-family: "Montserrat", helvetica, arial, sans-serif;
+        font-size: 19px;
+        font-weight: 400;
     }
 }

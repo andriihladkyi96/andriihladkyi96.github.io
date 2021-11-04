@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { Component, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,18 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'My films';
+  
+  @HostBinding('class') className = '';
+
+  constructor(private overlay: OverlayContainer) { }
+
+  toogleDarkMode($event:boolean){
+    const darkClassName = 'darkMode';
+    this.className = $event ? darkClassName : '';
+    if ($event) {
+      this.overlay.getContainerElement().classList.add(darkClassName);
+    } else {
+      this.overlay.getContainerElement().classList.remove(darkClassName);
+    }
+  };
 }

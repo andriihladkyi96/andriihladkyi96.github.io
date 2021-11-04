@@ -1,4 +1,7 @@
-<div class="movie__container"> 
+<div class="movie__container-favorite"> 
       <app-movie *ngFor="let movie of moviesList" [movie]="movie" [tableView]="false"
         (deleteMovie)="changeFavoriteStatus($event)" (changeFavoriteStatus)="changeFavoriteStatus($event)"></app-movie>
+        <div *ngIf="moviesList.length == 0" class="no-movies-message">
+              <p class="no-movies-message-text">Нажаль ви ще не вибрали жодного фільму.</p>
+        </div>
   </div>

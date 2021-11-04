@@ -17,10 +17,13 @@
     }
     &__list{
         display: flex;
+        flex-wrap: wrap;
         list-style: none;
         &-item{
             display: inline-block;
             padding: 10px;
+            text-decoration: none;
+           
         }
     }
     &__menu-btn {
@@ -28,11 +31,14 @@
         display: none;
     }
     &__link {
-        border-bottom: 1px solid #ffffff;
+        text-decoration: none;
+        color: #ffffff;
         &:hover {
             cursor: pointer;
-            transform: scale(1.06);
         }
+    }
+    .active{
+        border-bottom: 1px solid #ffffff;
     }
     @media (max-width: 620px) {
         .header__icon {

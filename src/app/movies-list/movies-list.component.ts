@@ -1,9 +1,7 @@
 import { Movie } from './../models/movie';
 import { MoviesService } from './../movies.service';
-import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { OverlayContainer } from '@angular/cdk/overlay';
 import { FormComponent } from '../form/form.component';
 import { LocalStorageService } from '../local-storage.service';
 
@@ -20,12 +18,10 @@ export interface Data {
 @Component({
   selector: 'app-movies-list',
   templateUrl: './movies-list.component.html',
-  styleUrls: ['./movies-list.component.scss'],
-  providers: []
+  styleUrls: ['./movies-list.component.scss']
 })
 export class MoviesListComponent implements OnInit{
 
-  toggleControl = new FormControl(false);
 
   moviesList: Movie[] = [];
 
@@ -34,21 +30,10 @@ export class MoviesListComponent implements OnInit{
   panelOpenState:boolean = false;
   sortValue:string = "алфавітом";
 
-  @HostBinding('class') className = '';
-
-  constructor(private dialog: MatDialog, private overlay: OverlayContainer, private movieService: MoviesService,private localStorageService: LocalStorageService) { }
+  constructor(private dialog: MatDialog, private movieService: MoviesService,private localStorageService: LocalStorageService) { }
 
 
   ngOnInit() {
-    this.toggleControl.valueChanges.subscribe((darkMode) => {
-      const darkClassName = 'darkMode';
-      this.className = darkMode ? darkClassName : '';
-      if (darkMode) {
-        this.overlay.getContainerElement().classList.add(darkClassName);
-      } else {
-        this.overlay.getContainerElement().classList.remove(darkClassName);
-      }
-    });
     this.moviesList = this.movieService.getMovies();
     this.tableView = this.localStorageService.getItem('tableView');
   }
@@ -158,9 +143,5 @@ export class MoviesListComponent implements OnInit{
       result = receipts.toString();
     }
     return result;
-  }
-
-  toogleMenu(){
-    this.isMenu = !this.isMenu;
   }
 }

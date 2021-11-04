@@ -4,25 +4,24 @@
         <div [ngClass]="isMenu ? 'header__inner active' : 'header__inner'">
           <mat-icon class="header__icon">movie_filter</mat-icon>
           <ul class="header__list">
-            <li class="header__list-item">
-               <a class="header__link">
+            <li class="header__list-item" >
+               <a class="header__link" routerLink="/favorite" routerLinkActive="active">
                  Улюблені фільми
                 </a>
             </li>
             <li class="header__list-item">
-              <a class="header__link">
+              <a class="header__link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
                 Всі фільми
                </a>
             </li>
           </ul>
           <div class="header__tooggle">
-            <mat-slide-toggle [formControl]="toggleControl" class="mr-8">
+            <mat-slide-toggle (click)="toggleControl()" class="mr-8">
             </mat-slide-toggle>
             <mat-icon>bedtime</mat-icon>
           </div>
         </div>
-        <mat-icon class="header__menu-btn">menu</mat-icon>
-        <!-- (click)="toogleMenu()" -->
+        <mat-icon class="header__menu-btn" (click)="toogleMenu()">menu</mat-icon>
       </mat-toolbar>
     </div>
   </header>

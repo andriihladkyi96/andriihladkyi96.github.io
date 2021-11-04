@@ -1,37 +1,42 @@
-<!-- <header class="header" [ngStyle]="{'color': 'primary'}">
-  <div class="container">
-    <mat-toolbar class="header__toolbar" color="primary">
-      <div [ngClass]="isMenu ? 'header__inner active' : 'header__inner'">
-        <mat-icon class="header__icon">movie_filter</mat-icon>
-        <a class="header__link">
-          <span *ngIf="favoriteView">Всі фільми</span>
-          <span *ngIf="!favoriteView">Улюблені фільми</span>
-        </a>
-        <div class="header__tooggle">
-          <mat-slide-toggle [formControl]="toggleControl" class="mr-8">
-          </mat-slide-toggle>
-          <mat-icon>bedtime</mat-icon>
-        </div>
-      </div>
-      <mat-icon class="header__menu-btn" (click)="toogleMenu()">menu</mat-icon>
-    </mat-toolbar>
-  </div>
-</header> -->
-<main class="content mat-app-background">
-  <div class="navigation">
-    <div class="movie__container">
-      <div class="navigation__inner">
-        <mat-button-toggle-group class="navigation__view-toggle" (click)="toogleView()"
-          [value]="tableView ?'tableView':'listView'">
-          <mat-button-toggle value="listView">
-            <mat-icon>list</mat-icon>
+<div class="navigation">
+  <div class="movie__container">
+    <div class="navigation__inner">
+      <mat-button-toggle-group class="navigation__view-toggle" (click)="toogleView()"
+        [value]="tableView ?'tableView':'listView'">
+        <mat-button-toggle value="listView">
+          <mat-icon>list</mat-icon>
+        </mat-button-toggle>
+        <mat-button-toggle value="tableView">
+          <mat-icon>view_module</mat-icon>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+      <div class="navigation__sort">
+        <span class="navigation__sort-title">Сортувати за:</span>
+        <mat-button-toggle-group [value]="'alphabetically'">
+          <mat-button-toggle class="navigation__sort-item" value="alphabetically" (click)="sortAlphabetically()">
+            алфавітом
           </mat-button-toggle>
-          <mat-button-toggle value="tableView">
-            <mat-icon>view_module</mat-icon>
+          <mat-button-toggle class="navigation__sort-item" value="byRelease" (click)="sortByRelease()">
+            датою релізу
+          </mat-button-toggle>
+          <mat-button-toggle class="navigation__sort-item" value="byCreation" (click)="sortByCreationDate()">
+            датою створення
           </mat-button-toggle>
         </mat-button-toggle-group>
-        <div class="navigation__sort">
-          <span class="navigation__sort-title">Сортувати за:</span>
+      </div>
+    </div>
+    <div class="navigation__expansion-panel">
+      <mat-accordion>
+        <mat-expansion-panel [expanded]="panelOpenState" (opened)="panelOpenState = true"
+          (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Сортувати за:
+            </mat-panel-title>
+            <mat-panel-description>
+              {{sortValue}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
           <mat-button-toggle-group [value]="'alphabetically'">
             <mat-button-toggle class="navigation__sort-item" value="alphabetically" (click)="sortAlphabetically()">
               алфавітом
@@ -43,45 +48,20 @@
               датою створення
             </mat-button-toggle>
           </mat-button-toggle-group>
-        </div>
-      </div>
-      <div class="navigation__expansion-panel">
-        <mat-accordion>
-          <mat-expansion-panel [expanded]="panelOpenState" (opened)="panelOpenState = true"
-            (closed)="panelOpenState = false">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                Сортувати за:
-              </mat-panel-title>
-              <mat-panel-description>
-                {{sortValue}}
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-            <mat-button-toggle-group [value]="'alphabetically'">
-              <mat-button-toggle class="navigation__sort-item" value="alphabetically" (click)="sortAlphabetically()">
-                алфавітом
-              </mat-button-toggle>
-              <mat-button-toggle class="navigation__sort-item" value="byRelease" (click)="sortByRelease()">
-                датою релізу
-              </mat-button-toggle>
-              <mat-button-toggle class="navigation__sort-item" value="byCreation" (click)="sortByCreationDate()">
-                датою створення
-              </mat-button-toggle>
-            </mat-button-toggle-group>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </div>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
   </div>
-  <section class="movie_section">
-    <div class="movie__container">
-      <div [class]="{'table-view':tableView, 'list-view':!tableView}">
-        <app-movie *ngFor="let movie of moviesList" [movie]="movie" [tableView]="tableView"
-          (deleteMovie)="deleteMovie($event)" (changeFavoriteStatus)="changeFavoriteStatus($event)"></app-movie>
-      </div>
-      <button mat-fab class="dialog-btn" color="primary" (click)="showDialog()">
-        <mat-icon>add</mat-icon>
-      </button>
+</div>
+
+<section class="movie_section">
+  <div class="movie__container">
+    <div [class]="{'table-view':tableView, 'list-view':!tableView}">
+      <app-movie *ngFor="let movie of moviesList" [movie]="movie" [tableView]="tableView"
+        (deleteMovie)="deleteMovie($event)" (changeFavoriteStatus)="changeFavoriteStatus($event)"></app-movie>
     </div>
-  </section>
-</main>
+    <button mat-fab class="dialog-btn" color="primary" (click)="showDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</section>

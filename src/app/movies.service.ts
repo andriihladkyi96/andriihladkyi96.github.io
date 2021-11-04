@@ -35,9 +35,8 @@ export class MoviesService {
   }
 
   public getFavoriteMovies() {
-    this.getMovies();
     return this.moviesList.filter(
-      movies => movies.isFavorite === true
+      movies => movies.isFavorite == true
     );
   }
 
@@ -47,13 +46,10 @@ export class MoviesService {
 }
 
 const testData: Movie[] = [
-  { "id": 0, "name": "Титанік", imageSourse: "", releaseData: new Date(2019, 12, 10), boxOffice: "14.3М", dateOfCreation: new Date(2020, 11, 5), isFavorite: false },
-  { "id": 1, "name": "Зелена миля", imageSourse: "", releaseData: new Date(2018, 12, 10), boxOffice: "14.3М", dateOfCreation: new Date(2014, 1, 6), isFavorite: false },
-  { "id": 2, "name": "Гаррі Поттер", imageSourse: "", releaseData: new Date(2017, 12, 10), boxOffice: "14.3М", dateOfCreation: new Date(2013, 1, 6), isFavorite: false },
-  { "id": 3, "name": "Movie", imageSourse: "", releaseData: new Date(2016, 12, 10), boxOffice: "14.3М", dateOfCreation: new Date(2016, 7, 6), isFavorite: false },
-  { "id": 4, "name": "Movie", imageSourse: "", releaseData: new Date(2016, 11, 10), boxOffice: "14.3М", dateOfCreation: new Date(2013, 8, 6), isFavorite: false },
-  { "id": 5, "name": "Movie", imageSourse: "", releaseData: new Date(2014, 12, 10), boxOffice: "14.3М", dateOfCreation: new Date(2014, 1, 9), isFavorite: false },
-  { "id": 6, "name": "Movie", imageSourse: "", releaseData: new Date(2013, 12, 10), boxOffice: "14.3М", dateOfCreation: new Date(2013, 1, 11), isFavorite: false },
-  { "id": 7, "name": "Movie", imageSourse: "", releaseData: new Date(2012, 12, 10), boxOffice: "14.3М", dateOfCreation: new Date(2013, 2, 6), isFavorite: false },
-  { "id": 8, "name": "Movie", imageSourse: "", releaseData: new Date(2021, 12, 10), boxOffice: "14.3М", dateOfCreation: new Date(2013, 1, 26), isFavorite: false },
+  { "id": 0, "name": "Аватар", imageSourse: "../assets/images/avatar.jpg", releaseData: new Date(2009, 11, 17), boxOffice: "8.6М", dateOfCreation: new Date(2021, 11, 1), isFavorite: false },
+  { "id": 1, "name": "Месники: Завершення", imageSourse: "../assets/images/avengers.jpg", releaseData: new Date(2019, 3, 25), boxOffice: "5.9М", dateOfCreation: new Date(2021, 11, 1), isFavorite: false },
+  { "id": 2, "name": "Король Лев", imageSourse: "../assets/images/lion-king.jpg", releaseData: new Date(2019, 7, 19), boxOffice: "5.3М", dateOfCreation: new Date(2021, 11, 1), isFavorite: false },
+  { "id": 3, "name": "Пірати Карибського моря: На дивних берегах", imageSourse: "../assets/images/pirats.jpg", releaseData: new Date(2011, 4, 19), boxOffice: "5.2М", dateOfCreation: new Date(2021, 11, 3), isFavorite: false },
+  { "id": 4, "name": "Мадагаскар 3", imageSourse: "../assets/images/madagascar.jpg", releaseData: new Date(2012, 5, 7), boxOffice: "4.8М", dateOfCreation: new Date(2021, 11, 4), isFavorite: false },
+  { "id": 5, "name": "Хоббіт: Пустка Смоґа", imageSourse: "../assets/images/hobbit.jpg", releaseData: new Date(2013, 11, 18), boxOffice: "4.7М", dateOfCreation: new Date(2021, 11, 4), isFavorite: false },
 ];
