@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { LocalStorageService } from './local-storage.service';
 import { Movie } from './models/movie';
 
@@ -10,6 +10,8 @@ export class MoviesService {
   moviesList: Movie[] = [];
 
   constructor(private localStorageService: LocalStorageService) { }
+
+  public moviesListChanged:EventEmitter<Movie[]> = new EventEmitter();
 
   public getMovies(): Movie[] {
     this.moviesList = this.localStorageService.getItem("movies") == null ? testData :  this.localStorageService.getItem("movies");
@@ -42,6 +44,20 @@ export class MoviesService {
 
   private saveChanges(){
     this.localStorageService.setItem("movies", this.moviesList);
+    this.moviesListChanged.emit(this.moviesList);
+  }
+
+  search(searchTerm: string){
+    if(searchTerm == ""){
+      this.moviesListChanged.emit(this.moviesList);
+    }
+    this.moviesListChanged.emit(
+      this.moviesList.filter(movie => movie.name.toLowerCase().startsWith(searchTerm))
+    );
+  }
+
+  public getMoviesListSize(): number{
+    return this.moviesList.length;
   }
 }
 

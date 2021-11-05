@@ -15,6 +15,15 @@
         align-items: center;
         justify-content: space-between;
     }
+    &__search,&__tooggle{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 10px;
+    }
+    &__search{
+        margin-left: 10px;
+    }
     &__list{
         display: flex;
         flex-wrap: wrap;
@@ -46,6 +55,9 @@
         }
         &__menu-btn {
             display: inline;
+        }
+        &__search{
+            margin-left: auto;
         }
         &__inner {
             height: auto;
